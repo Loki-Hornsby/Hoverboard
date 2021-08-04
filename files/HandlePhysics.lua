@@ -54,7 +54,7 @@ function get_direction( x1, y1, x2, y2 )
 	return math.atan2( ( y2 - y1 ), ( x2 - x1 ) )
 end
 
-local found_normal,normal_x,normal_y,approximate_distance_from_surface = GetSurfaceNormal(GroundX, GroundY, 30, 16)
+local found_normal,normal_x,normal_y,approximate_distance_from_surface = GetSurfaceNormal(GroundX, GroundY, 10, 16)
 
 local old_average = GetValueNumber("average_rotation", 0)
 
