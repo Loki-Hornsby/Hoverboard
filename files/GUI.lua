@@ -4,18 +4,17 @@ dofile("mods/Hoverboard/files/utilities.lua") -- My Utilities
 local Riding = "Hoverboard_riding"
 
 --if GlobalsGetValue(Riding, "0") == "1" then
-    local GUI = GuiCreate()
+    --local GUI = GuiCreate()
 
-    GuiStartFrame(GUI)
+    --GuiStartFrame(GUI)
 
-    local X, Y = GuiGetScreenDimensions(GUI)
+    --local X, Y = GuiGetScreenDimensions(GUI)
 
-    GuiImage( GUI, 
-    1, 
-    X/2, 
-    Y/2, 
-    "mods/Hoverboard/files/Images/Hoverboard2.png" 
-    1,
-    5,
-    )
+    --GuiImage(GUI, 
+    --1, 
+    --X/2, 
+    --Y/2, 
+    --"mods/Hoverboard/files/Images/Hoverboard2.png" 
+    --1,
+    --5)
 --end

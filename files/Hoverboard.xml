@@ -32,7 +32,7 @@
     <!-- Interaction -->
 
     <InteractableComponent
-        radius = "20"
+        radius = "6"
         ui_text = "Press $0 to ride the Hoverboard!"
         name = "hoverboard_interact"
     ></InteractableComponent>

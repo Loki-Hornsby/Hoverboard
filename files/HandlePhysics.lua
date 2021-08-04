@@ -36,23 +36,21 @@ local Grounded, GroundX, GroundY = RaytraceSurfacesAndLiquiform(
 
 ---->> Hovering
 local GroundDist = get_distance(BX, BY, GroundX, GroundY)
-local FloatHeight = -10
+local FloatHeight = 4*1.5
 
 if State == "On" then
 	if Grounded then
 		if GroundDist < 4 then
-			PhysicsApplyForce(Board, 0, 0 - VelY)
+			PhysicsApplyForce(Board, 0 - VelX, 0 - VelY)
 		end
 
-		PhysicsApplyForce(Board, RotVecCalcX*20, -RotVecCalcY*20)
+		PhysicsApplyForce(Board, -RotVecCalcX*80, -RotVecCalcY*20)
 	else
-		PhysicsApplyForce(Board, 0, -FloatHeight*2 + -VelY*10)
+		PhysicsApplyForce(Board, 0, FloatHeight + -VelY*10)
 	end
-else
-	PhysicsApplyForce(Board, 0, -1)
 end
 
----->> Rotate to match terrain
+---->> Rotation
 function approx_rolling_average(avg, new_sample, n)
 	avg = avg - avg / n;
 	avg = avg + new_sample / n;
@@ -63,7 +61,7 @@ function get_direction( x1, y1, x2, y2 )
 	return math.atan2( ( y2 - y1 ), ( x2 - x1 ) )
 end
 
-local found_normal,normal_x,normal_y,approximate_distance_from_surface = GetSurfaceNormal(GroundX, GroundY, 10, 16)
+local found_normal,normal_x,normal_y,approximate_distance_from_surface = GetSurfaceNormal(GroundX, GroundY, 30, 16)
 
 local old_average = GetValueNumber("average_rotation", 0)
 
@@ -77,13 +75,14 @@ local new_average = approx_rolling_average(old_average, degree_shift, 1)
 
 SetValueNumber("average_rotation", new_average)
 
-if State == "On" then
-	if BRot < math.deg(90) and BRot > math.deg(-90) then
-		--PhysicsApplyTorque(Board, new_average - BRot)
-	else
-		--PhysicsApplyTorque(Board, 0 - BRot)
-	end
+if BRot < math.deg(-20) and BRot > math.deg(20) then
+	PhysicsApplyTorque(Board, new_average - BRot)
+else
+	
 end
+
+PhysicsApplyTorque(Board, 0 - BRot*2)
+
 
 ---->> Testing
 
@@ -94,6 +93,6 @@ if TEST == nil then
 	TEST = 1
 end
 
-EntitySetTransform(A, GroundX, GroundY)
+EntitySetTransform(A, BX + -RotVecCalcX*20, BY + 10)
 
 
