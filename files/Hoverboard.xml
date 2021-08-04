@@ -1,0 +1,126 @@
+<Entity name="Hoverboard" tags="hittable,prop,prop_physics" serialize="1">
+    <!-- Physics -->
+    <PhysicsBodyComponent 
+        uid="1" 
+        allow_sleep="1" 
+      
+        fixed_rotation="0" 
+
+        is_bullet="0" 
+        auto_clean="0"
+        on_death_leave_physics_body="1" 
+        kills_entity="0"
+
+        angular_damping="5" 
+		linear_damping="0.2"
+        hax_fix_going_through_ground="0"
+    ></PhysicsBodyComponent>
+
+    <VelocityComponent
+		_tags="enabled_in_world"
+		air_friction="0.8"
+		terminal_velocity="150"
+    ></VelocityComponent>
+
+    <PhysicsImageShapeComponent
+        body_id="1"
+        centered="1"
+        image_file="mods/Hoverboard/files/Images/Hoverboard2.png"
+        material="metal" 
+    ></PhysicsImageShapeComponent>
+
+    <!-- Interaction -->
+    <InteractableComponent
+        radius = "20"
+        ui_text = "Press $0 to ride the Hoverboard!"
+        name = "hoverboard_interact"
+    ></InteractableComponent>
+
+    <LuaComponent
+        script_interacting = "mods/Hoverboard/files/Interaction.lua"
+    ></LuaComponent>
+
+    <!-- Main Script -->
+    <LuaComponent
+        script_source_file = "mods/Hoverboard/files/Hoverboard.lua"
+        execute_on_added = "1"
+        execute_every_n_frame = "1"
+        execute_times = "-1"
+    ></LuaComponent>
+
+    <!-- Visuals -->
+
+    <ParticleEmitterComponent
+        emitted_material_name="spark_blue"
+
+        offset.x="-5.5"
+        offset.y="2.3"
+
+        x_pos_offset_min="-1"
+        x_pos_offset_max="1"
+        y_pos_offset_min=""
+        y_pos_offset_max="0"
+
+        x_vel_min="-7"
+        x_vel_max="7"
+
+        y_vel_min="80"
+        y_vel_max="180"
+
+        count_min="3"
+        count_max="7"
+
+        lifetime_min="0.01"
+        lifetime_max="0.06"
+
+        create_real_particles="0"
+        emit_cosmetic_particles="1"
+
+        emission_interval_min_frames="0"
+        emission_interval_max_frames="1"
+
+        is_emitting="1" 
+    ></ParticleEmitterComponent>
+
+    <ParticleEmitterComponent
+        emitted_material_name="spark_blue"
+
+        offset.x="5.5"
+        offset.y="2.3"
+
+        x_pos_offset_min="-1"
+        x_pos_offset_max="1"
+        y_pos_offset_min=""
+        y_pos_offset_max="0"
+
+        x_vel_min="-7"
+        x_vel_max="7"
+
+        y_vel_min="80"
+        y_vel_max="180"
+
+        count_min="3"
+        count_max="7"
+
+        lifetime_min="0.01"
+        lifetime_max="0.06"
+
+        create_real_particles="0"
+        emit_cosmetic_particles="1"
+
+        emission_interval_min_frames="0"
+        emission_interval_max_frames="1"
+
+        is_emitting="1" 
+    ></ParticleEmitterComponent>
+
+    <!-- Audio -->
+    <AudioLoopComponent
+		_tags="enabled_in_world"
+		file="data/audio/Desktop/misc.bank"
+		event_name="misc/moon/movement_loop_world"
+		set_speed_parameter="1"
+		auto_play="1"
+		play_on_component_enable="1"
+    ></AudioLoopComponent>
+</Entity>
