@@ -11,8 +11,10 @@ ModLuaFileAppend("data/scripts/biomes/mountain/mountain_hall.lua", "mods/Hoverbo
 
 ---->> Keys
 local Riding = "Hoverboard_riding"
+local State = "Hoverboard_state"
  
----->> On player init
+---->> Initialization
 function OnPlayerSpawned(player)
     GlobalsSetValue(Riding, "0")
+    GlobalsSetValue(State, "Off")
 end

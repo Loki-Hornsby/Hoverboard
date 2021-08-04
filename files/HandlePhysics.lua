@@ -2,16 +2,26 @@
 dofile("mods/Hoverboard/files/utilities.lua")
 dofile_once("data/scripts/lib/utilities.lua")
 
----->> Components
-local PhysicsComponent = EntityGetFirstComponentIncludingDisabled(getBoardEntity(), "PhysicsBodyComponent")
+---->> General
+local Board = getBoardEntity()
+local BX, BY, BRot = EntityGetTransform(Board)
 
----->> Positions
-local BX, BY, BRot = EntityGetTransform(getBoardEntity())
-local PlyX, PlyY, PlyRot = EntityGetTransform(getPlayerEntity())
+local Ply = getPlayerEntity()
+local PlyX, PlyY, PlyRot = EntityGetTransform(Ply)
+
+---->> Global States
+local RidingKey = "Hoverboard_riding"
+local Riding = GlobalsGetValue(RidingKey, "0")
+
+local StateKey = "Hoverboard_state"
+local State = GlobalsGetValue(StateKey, "0")
+
+---->> Components
+local PhysicsComponent = EntityGetFirstComponentIncludingDisabled(Board, "PhysicsBodyComponent")
 
 ---->> Velocity
-local VelX, VelY = PhysicsGetComponentVelocity(getBoardEntity(), PhysicsComponent)
-local AngVel = PhysicsGetComponentAngularVelocity(getBoardEntity(), PhysicsComponent)
+local VelX, VelY = PhysicsGetComponentVelocity(Board, PhysicsComponent)
+local AngVel = PhysicsGetComponentAngularVelocity(Board, PhysicsComponent)
 
 ---->> Raytrace calcs
 local RotVecCalcX = -math.sin(BRot)
@@ -24,26 +34,25 @@ local Grounded, GroundX, GroundY = RaytraceSurfacesAndLiquiform(
 	BX + RotVecCalcX*10, 
 	BY + RotVecCalcY*10)
 
-
----->> Ground distance
-local GroundDist = get_distance(BX, BY, GroundX, GroundY)
-
 ---->> Hovering
+local GroundDist = get_distance(BX, BY, GroundX, GroundY)
 local FloatHeight = -10
 
-if Grounded then
-	if GroundDist < 4 then
-		PhysicsApplyForce(getBoardEntity(), 0, 0 - VelY)
-	end
+if State == "On" then
+	if Grounded then
+		if GroundDist < 4 then
+			PhysicsApplyForce(Board, 0, 0 - VelY)
+		end
 
-	PhysicsApplyForce(getBoardEntity(), RotVecCalcX*20 + -3, -RotVecCalcY*20)
+		PhysicsApplyForce(Board, RotVecCalcX*20, -RotVecCalcY*20)
+	else
+		PhysicsApplyForce(Board, 0, -FloatHeight*2 + -VelY*10)
+	end
 else
-	PhysicsApplyForce(getBoardEntity(), 0, -FloatHeight*2 + -VelY*10)
+	PhysicsApplyForce(Board, 0, -1)
 end
 
-
 ---->> Rotate to match terrain
-
 function approx_rolling_average(avg, new_sample, n)
 	avg = avg - avg / n;
 	avg = avg + new_sample / n;
@@ -68,14 +77,17 @@ local new_average = approx_rolling_average(old_average, degree_shift, 1)
 
 SetValueNumber("average_rotation", new_average)
 
-if BRot < math.deg(90) and BRot > math.deg(-90) then
-	PhysicsApplyTorque(getBoardEntity(), new_average - BRot)
-else
-	PhysicsApplyTorque(getBoardEntity(), 0 - BRot)
+if State == "On" then
+	if BRot < math.deg(90) and BRot > math.deg(-90) then
+		--PhysicsApplyTorque(Board, new_average - BRot)
+	else
+		--PhysicsApplyTorque(Board, 0 - BRot)
+	end
 end
 
----->> Tesing
+---->> Testing
 
+-- Tracking for GroundX and GroundY
 if TEST == nil then
 	A = EntityLoad("mods/Hoverboard/files/ParticleTest.xml", 0, 0)
 

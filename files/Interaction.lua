@@ -8,7 +8,6 @@ function interacting(entity_who_interacted, entity_interacted, interactable_name
         if GlobalsGetValue(Riding, "0") == "1" then
             GlobalsSetValue(Riding, "0")
         else
-            GamePrint("Riding")
             GlobalsSetValue(Riding, "1")
         end
     end
